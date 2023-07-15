@@ -11,48 +11,21 @@ from functions import *
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
-
 bot = Bot(token=credentials.token)
-
 dp = Dispatcher(bot)
 
 # used to check the function to handle arbitrary text (default text)
 last_function = ''
-
 the_game = None
 
 # dict of values for using to create a new game
 new_game = {'name': '', 'game_type': '', 'buyin_string': '', 'club': ''}
 
-
 def get_new_game_status():
-    # if new_game['name'] == '':
-    # status = "new game values:\n" + \
-    # "🟥" if new_game['club'] == '' else "🟩" + "club: {}\n".format(new_game['club']) + \
-    # "🟥" if new_game['game_type'] == '' else "🟩" + "type: {}\n".format(new_game['game_type']) + \
-    # "🟥" if new_game['name'] == '' else "🟩" + "name: {}\n".format(new_game['name']) + \
-    # "🟥" if new_game['buyin_string'] == '' else "🟩" + "buyin: {}\n".format(new_game['buyin_string'])
-    #
-    #
     status = "new game values:\nclub: {}\ntype: {}\nname: {}\nbuyin: {}\n".format(
         new_game['club'], new_game['game_type'], new_game['name'], new_game['buyin_string'],)
     logger.info(status)
     return status
-
-    # # prepare update keyboard
-    # update_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    # end_game_button = KeyboardButton('End Game ✅')
-    # set_prize_button = KeyboardButton('Set Prize 💲')
-    # bullet_button = KeyboardButton('Add Bullet 💰')
-    # if the_game.is_bounty:
-    #     bounty_button = 'Add KO #{} 🏆'.format(the_game.bounties + 1)
-    #     update_kb.add(end_game_button, set_prize_button, bullet_button, bounty_button)
-    # else:
-    #     update_kb.add(end_game_button, set_prize_button, bullet_button)
-    # update_kb.add('Back ↩')
-    # game_description = "🔸Club: {}\n🔸Game type: {}\n🔸Tournament name: {}\n🔸Buyin: {}\n🔹Net profit: {}". \
-    #     format(the_game.club, the_game.game_type, the_game.name,
-    #            the_game.buyin_string, str(the_game.net_profit))
 
 
 # def get_update_keyboard():
@@ -210,7 +183,8 @@ async def add_new_game(message: types.Message):
 
 
 # setting a gametype
-@dp.message_handler(regexp=r"NL|PLO|PLO5|PLO6")
+# @dp.message_handler(regexp=r"^[NL|PLO|PLO5|PLO6")
+@dp.message_handler(regexp=r"^(?:NL|PLO|PLO5|PLO6)$")
 async def set_game_type(message: types.Message):
     global the_game
     global new_game

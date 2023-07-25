@@ -4,4 +4,4 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 ENV GAMESBOT_VERSION=1.0.4
-CMD ["python3", "-m" , "print('hello')"]
+CMD ["python3", "games-bot.py"]

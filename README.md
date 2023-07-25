@@ -24,9 +24,12 @@ to login to the mysql container:
 $ docker exec -ti ..... bash
 
 ### if you want to see the data : (password is 'password')
-(mysql-container)$ mysql -uroot -p
+bash-4.2# mysql -uroot -p
 
 ### to backup the tables into a sql file :
-(mysql-container)$ mysqldump -h127.0.0.1 -uroot -ppassword db > db.sql
+bash-4.2# mysqldump -h127.0.0.1 -uroot -ppassword db > db.sql
+
+### to restore :
+bash-4.2# mysql -h127.0.0.1 -uroot -ppassword db < db.sql 
 
 ```

@@ -2,10 +2,15 @@ from sqlalchemy import DateTime, Column, Integer, String, Boolean, Float, Foreig
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
+import config
 
 # disable logging of sqlalchemy
 # engine = create_engine('mysql+mysqlconnector://user:password@localhost/db', echo=True)
-engine = create_engine('mysql+mysqlconnector://user:password@localhost/db')
+# engine = create_engine('mysql+mysqlconnector://user:password@localhost/db')
+engine = create_engine('mysql+mysqlconnector://{}:{}@{}/{}'.format(config.db_user,
+                                                                   config.db_password,
+                                                                   config.db_host,
+                                                                   config.db_name))
 
 Base = declarative_base()
 

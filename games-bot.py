@@ -6,6 +6,7 @@ import sys
 import random
 
 from functions import *
+from statistics import *
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -62,10 +63,21 @@ def get_games_keyboard():
     return games_kb
 
 
+@dp.message_handler(regexp='Statistics 📈')
+async def statistics(message: types.Message):
+    profit = "Statistics 📈\ntoday net profit: {}\n7-days net profit: {}\n".format(
+        str(get_today_netprofit()), str(get_7days_netprofit()))
+    # return profit
+    await message.answer(profit, reply_markup=get_games_keyboard())
+
+
+
+
+
 # # USE FOR DEVELOPING ONLY !!!
 # @dp.message_handler(commands=['db_init'])
 # async def db_init(message: types.Message):
-#     logger.info("db_init() called ...")
+#     logger.info("db_init() called ...")`
 #     create_clubs()
 #     create_games()
 
@@ -135,7 +147,9 @@ async def set_prize(message: types.Message):
     last_function = 'set_prize'
     logger.info("set_prize() called ...")
     await message.answer('What is the prize ?')
-    set_game_prize(the_game, int(message.text))
+
+    # INCORRECT: the message here is still 'Set Prize' ... (should be in next func call)
+    # set_game_prize(the_game, int(message.text))
 
 
 @dp.message_handler(regexp='Add Bullet 💰')
@@ -184,7 +198,7 @@ async def add_new_game(message: types.Message):
 
 # setting a gametype
 # @dp.message_handler(regexp=r"^[NL|PLO|PLO5|PLO6")
-@dp.message_handler(regexp=r"^(?:NL|PLO|PLO5|PLO6)$")
+@dp.message_handler(regexp=r"^(?:NL|NL-SAT|PLO|PLO5|PLO6)$")
 async def set_game_type(message: types.Message):
     global the_game
     global new_game

@@ -24,6 +24,7 @@ class Game(Base):
     is_bounty = Column(Boolean, default=False)
     bounties = Column(Integer, default=None)
     prize = Column(Integer, default=None)
+    bounty_prize = Column(Integer, default=0)
     club = Column(String(255))
     bullets = Column(Integer, default=None)
     bullet_price = Column(Integer, default=0)

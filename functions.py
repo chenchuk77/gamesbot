@@ -7,23 +7,25 @@ def get_running_games():
     return running_games
 
 
-def get_finished_games():
-    session = Session()
-    db_games = session.query(Game)
-    finshed_games = [x for x in db_games if x.prize is not None]
-    return finshed_games
-
+# def get_finished_games():
+#     session = Session()
+#     db_games = session.query(Game)
+#     finshed_games = [x for x in db_games if x.prize is not None]
+#     return finshed_games
+#
 
 def set_game_prize(game, prize):
     session = Session()
     db_game = session.query(Game).filter(Game.id == game.id).first()
     db_game.prize = prize
+    db_game.net_profit += prize
     session.commit()
 
 def add_game_bullet(game):
     session = Session()
     db_game = session.query(Game).filter(Game.id == game.id).first()
     db_game.bullets += 1
+    db_game.total_buyin -= db_game.bullet_price
     db_game.net_profit -= db_game.bullet_price
     session.commit()
 
@@ -104,6 +106,7 @@ def start_new_game(game_type, name, buyin_string, club_name):
                     bounties=0 if is_bounty(buyin_string) else None,
                     bullets=1,
                     prize=None,
+                    bounty_prize=0,
                     bullet_price=get_total_buyin(buyin_string),
                     total_buyin=get_total_buyin(buyin_string),
                     net_profit=(-1) * get_total_buyin(buyin_string))
@@ -169,8 +172,8 @@ def create_clubs():
 
 def create_games():
     start_new_game("PLO",    "LUNCH",      "(60+60+12)",   "Matrix")
-    start_new_game("NL",     "MOON MAIN",  "(100+100+20)", "Matrix")
-    start_new_game("PLO6",   "NOON HYPER", "(50+50+10)",   "Matrix")
-    start_new_game("NL-SAT", "1/5 - 333",  "(73+0)",       "Spades")
+    # start_new_game("NL",     "MOON MAIN",  "(100+100+20)", "Matrix")
+    # start_new_game("PLO6",   "NOON HYPER", "(50+50+10)",   "Matrix")
+    # start_new_game("NL-SAT", "1/5 - 333",  "(73+0)",       "Spades")
 
 

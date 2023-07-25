@@ -29,22 +29,6 @@ def get_new_game_status():
     return status
 
 
-# def get_update_keyboard():
-#     # prepare update keyboard
-#     update_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-#     end_game_button = KeyboardButton('End Game ✅')
-#     set_prize_button = KeyboardButton('Set Prize 💲')
-#     bullet_button = KeyboardButton('Add Bullet 💰')
-#     if the_game.is_bounty:
-#         bounty_button = 'Add KO #{} 🏆'.format(the_game.bounties + 1)
-#         update_kb.add(end_game_button, set_prize_button, bullet_button, bounty_button)
-#     else:
-#         update_kb.add(end_game_button, set_prize_button, bullet_button)
-#     update_kb.add('Back ↩')
-#     return update_kb
-
-
-
 def get_games_keyboard():
     running_games = get_running_games()
     # gameKB = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True, )
@@ -69,9 +53,6 @@ async def statistics(message: types.Message):
         str(get_today_netprofit()), str(get_7days_netprofit()))
     # return profit
     await message.answer(profit, reply_markup=get_games_keyboard())
-
-
-
 
 
 # # USE FOR DEVELOPING ONLY !!!
@@ -148,9 +129,6 @@ async def set_prize(message: types.Message):
     logger.info("set_prize() called ...")
     await message.answer('What is the prize ?')
 
-    # INCORRECT: the message here is still 'Set Prize' ... (should be in next func call)
-    # set_game_prize(the_game, int(message.text))
-
 
 @dp.message_handler(regexp='Add Bullet 💰')
 async def add_bullet(message: types.Message):
@@ -217,24 +195,6 @@ async def set_game_type(message: types.Message):
     last_function = 'set_buyin'
 
 
-# @dp.message_handler(regexp=r"^:")
-# async def set_game_name(message: types.Message):
-#     global the_game
-#     global new_game
-#     global last_function
-#     logger.info("set_game_name() called ...")
-#     logger.info("preparing a new game record (name)")
-#     game_names = list_game_names()
-#     game_names_kb = ReplyKeyboardMarkup(one_time_keyboard=True)
-#     for game_name in game_names:
-#         game_names_kb.add(KeyboardButton(game_name))
-#     back_button = KeyboardButton('Back ↩')
-#     game_names_kb.add(back_button)
-#     await message.answer('Choose buyin structure', reply_markup=game_names_kb)
-#     new_game['name'] = message.text
-#     last_function = 'set_game_name'
-
-
 # setting a buyin string in the form of "( .* )"
 @dp.message_handler(regexp=r"^\(.*\)$")
 async def set_buyin(message: types.Message):
@@ -243,13 +203,6 @@ async def set_buyin(message: types.Message):
     global last_function
     logger.info("set_buyin() called ...")
     new_game['buyin_string'] = message.text
-    # logger.info("preparing a new game record (buyin)")
-    # buyin_strings = list_buyin_strings()
-    # buyin_strings_kb = ReplyKeyboardMarkup(one_time_keyboard=True)
-    # for buyin_string in buyin_strings:
-    #     buyin_strings_kb.add(KeyboardButton(buyin_string))
-    # back_button = KeyboardButton('Back ↩')
-    # buyin_strings_kb.add(back_button)
     logger.info("preparing a new game record (name)")
     game_names = list_game_names()
     game_names_kb = ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -257,16 +210,8 @@ async def set_buyin(message: types.Message):
         game_names_kb.add(KeyboardButton(game_name))
     back_button = KeyboardButton('Back ↩')
     game_names_kb.add(back_button)
-    # await message.answer('Choose buyin structure', reply_markup=game_names_kb)
-    # new_game['name'] = message.text
-    # last_function = 'default'
-
     await message.answer(get_new_game_status() + 'Set game name', reply_markup=game_names_kb)
     last_function = 'set_buyin'
-
-
-
-
 
 
 # generic default handler for all ( must be declared LAST ! )
@@ -307,52 +252,11 @@ async def default(message: types.Message):
             game_description = get_new_game_status()
             # init
             new_game = {'name': '', 'game_type': '', 'buyin_string': '', 'club': ''}
-
             games_kb = get_games_keyboard()
-            # # prepare update keyboard
-            # update_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-            # end_game_button = KeyboardButton('End Game ✅')
-            # set_prize_button = KeyboardButton('Set Prize 💲')
-            # bullet_button = KeyboardButton('Add Bullet 💰')
-            # if the_game.is_bounty:
-            #     bounty_button = 'Add KO #{} 🏆'.format(the_game.bounties + 1)
-            #     update_kb.add(end_game_button, set_prize_button, bullet_button, bounty_button)
-            # else:
-            #     update_kb.add(end_game_button, set_prize_button, bullet_button)
-            # update_kb.add('Back ↩')
-            #
             await message.answer('game added successfuly.\n\nU can now update it from the menu' + game_description, reply_markup=games_kb)
             last_function = 'default'
-
-
         return
-
-        # game_names = list_game_names()
-        # game_names_kb = ReplyKeyboardMarkup(one_time_keyboard=True)
-        # for game_name in game_names:
-        #     game_names_kb.add(KeyboardButton(game_name))
-        # back_button = KeyboardButton('Back ↩')
-        # game_names_kb.add(back_button)
-        # await message.answer('Choose buyin structure', reply_markup=game_names_kb)
-        # new_game['name'] = message.text
-        # last_function = 'default'
-        # return
-
-        # buyin_strings = list_buyin_strings()
-        # buyin_strings_kb = ReplyKeyboardMarkup(one_time_keyboard=True)
-        # for buyin_string in buyin_strings:
-        #     buyin_strings_kb.add(KeyboardButton(buyin_string))
-        # back_button = KeyboardButton('Back ↩')
-        # game_types_kb.add(back_button)
-        # await message.answer('Choose buyin structure', reply_markup=game_types_kb)
-        # new_game['buyin_string'] = message.text
-
-
-        # await message.answer('Choose Buyin', reply_markup=game_types_kb)
-        # new_game['game_type'] = message.text
-
     last_function = 'default'
-
 
 
 # this is the last line

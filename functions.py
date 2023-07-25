@@ -7,19 +7,13 @@ def get_running_games():
     return running_games
 
 
-# def get_finished_games():
-#     session = Session()
-#     db_games = session.query(Game)
-#     finshed_games = [x for x in db_games if x.prize is not None]
-#     return finshed_games
-#
-
 def set_game_prize(game, prize):
     session = Session()
     db_game = session.query(Game).filter(Game.id == game.id).first()
     db_game.prize = prize
     db_game.net_profit += prize
     session.commit()
+
 
 def add_game_bullet(game):
     session = Session()
@@ -29,6 +23,7 @@ def add_game_bullet(game):
     db_game.net_profit -= db_game.bullet_price
     session.commit()
 
+
 def win_bounty(game):
     session = Session()
     db_game = session.query(Game).filter(Game.id == game.id).first()
@@ -37,36 +32,12 @@ def win_bounty(game):
     session.commit()
 
 
-
-
 def is_game_running(game):
     session = Session()
     db_game = session.query(Game).filter(Game.id == game.id).first()
     return db_game.prize is not None
 
-# def is_bounty(game):
-#     session = Session()
-#     db_game = session.query(Game).filter(Game.id == game.id).first()
-#     return db_game.buyin_string.count('+') == 2
 
-# def get_buyin_amount(game):
-#     session = Session()
-#     db_game = session.query(Game).filter(Game.id == game.id).first()
-#     buying_string = db_game.buyin_string
-#     if buying_string.count('+') == 2:
-#         # buyin_string is 'x+y+z'
-#         buyin = int(buying_string.split('+')[0])
-#         bounty = int(buying_string.split('+')[1])
-#         rake = int(buying_string.split('+')[2])
-#         return buyin + bounty + rake
-#     elif buying_string.count('+') == 1:
-#         # buyin_string is 'x+y' (non bounty)
-#         buyin = int(buying_string.split('+')[0])
-#         rake = int(buying_string.split('+')[1])
-#         return buyin + rake
-#     else:
-#         buyin = int(buying_string)
-#         return buyin
 def is_bounty(buyin_string):
     return buyin_string.count('+') == 2
 
@@ -95,9 +66,7 @@ def get_bounty_value(buyin_string):
 
 def start_new_game(game_type, name, buyin_string, club_name):
     session = Session()
-
     bounty_count = 0 if is_bounty(buyin_string) else None
-
     new_game = Game(game_type=game_type,
                     name=name,
                     buyin_string=buyin_string,
@@ -166,7 +135,6 @@ def create_clubs():
         print('creating club PPC')
         fullhouse = Club(name="PPC", balance=0, owner_phone="000999888")
         session.add(fullhouse)
-
     session.commit()
 
 

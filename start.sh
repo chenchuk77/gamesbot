@@ -15,5 +15,5 @@ docker run -d --rm \
   --name gamesbot \
   -e GAMESBOT_VERSION=${GAMESBOT_VERSION} \
   -v ${PWD}:/app \
-    ${IMAGE}
+    ${IMAGE} "$@"
 

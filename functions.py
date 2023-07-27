@@ -1,5 +1,6 @@
 from models import Game, Club, Session
 
+
 def get_running_games():
     session = Session()
     db_games = session.query(Game)
@@ -88,29 +89,29 @@ def list_club_names():
     session = Session()
     all_clubs = session.query(Club)
     club_names = [x.name for x in all_clubs]
-    return club_names
+    return sorted(club_names)
 
 
 def list_game_types():
     session = Session()
     all_games = session.query(Game)
     game_types = [x.game_type for x in all_games]
-    return set(game_types)
+    return sorted(list(set(game_types)))
 
 
 def list_game_names():
     session = Session()
     all_games = session.query(Game)
     game_names = [x.name for x in all_games]
-    return set(game_names)
+    return sorted(list(set(game_names)))
 
 
 def list_buyin_strings():
     session = Session()
     all_games = session.query(Game)
     buyin_strings = [x.buyin_string for x in all_games]
-    return set(buyin_strings)
-
+    # set to remove dups
+    return sorted(list(set(buyin_strings)))
 
 
 def create_clubs():

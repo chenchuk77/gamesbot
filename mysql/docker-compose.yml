@@ -13,6 +13,18 @@ services:
     expose:
       - '3306'
     volumes:
-      - my-db:/var/lib/mysql
-volumes:
-  my-db:
+      - ./data:/var/lib/mysql
+
+  db-backup:
+    image: mysql:5.7
+    restart: always
+
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - ./backups:/backups
+      - ./backup-job.sh:/backup-job.sh
+    entrypoint: ["/backup-job.sh"]

@@ -15,6 +15,9 @@ def get_games_last_n_days(n):
     games_last_n_days = [x for x in db_games if x.started > start_point]
     return games_last_n_days
 
+def get_games_count_last_n_days(n):
+    return len(get_games_last_n_days(n))
+
 
 def get_net_profit_last_n_days(n):
     games_last_n_days = get_games_last_n_days(n)
@@ -33,5 +36,10 @@ def get_today_netprofit():
 
 def get_7days_netprofit():
     today_games = get_games_last_n_days(7)
+    return sum(game.net_profit for game in today_games)
+
+
+def get_30days_netprofit():
+    today_games = get_games_last_n_days(30)
     return sum(game.net_profit for game in today_games)
 

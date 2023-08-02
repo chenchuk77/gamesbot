@@ -33,3 +33,17 @@ bash-4.2# mysqldump -h127.0.0.1 -uroot -ppassword db > db.sql
 bash-4.2# mysql -h127.0.0.1 -uroot -ppassword db < db.sql 
 
 ```
+
+CREATE DATABASE db;
+CREATE USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%';
+
+
+
+
+docker-compose exec db-backup bash
+bash-4.2# mysqldump -hdb -uroot -ppassword > /backups/bkp-$(date +%s).sql
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
+bash-4.2# 
+
+

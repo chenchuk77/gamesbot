@@ -25,7 +25,7 @@ new_game = {'name': '', 'game_type': '', 'buyin_string': '', 'club': ''}
 def get_new_game_status():
     status = "new game values:\nclub: {}\ntype: {}\nname: {}\nbuyin: {}\n".format(
         new_game['club'], new_game['game_type'], new_game['name'], new_game['buyin_string'],)
-    logger.info(status)
+    logger.info(status.replace("\n", ", "))
     return status
 
 
@@ -49,8 +49,16 @@ def get_games_keyboard():
 
 @dp.message_handler(regexp='Statistics 📈')
 async def statistics(message: types.Message):
-    profit = "Statistics 📈\ntoday net profit: {}\n7-days net profit: {}\n".format(
-        str(get_today_netprofit()), str(get_7days_netprofit()))
+    played_today = str(get_games_count_last_n_days(0))
+    profit_today = str(get_today_netprofit())
+    played_7days = str(get_games_count_last_n_days(7))
+    profit_7days = str(get_7days_netprofit())
+    played_30days = str(get_games_count_last_n_days(30))
+    profit_30days = str(get_30days_netprofit())
+
+    profit = "Statistics 📈\n▪Today:\n🔹Games played: {}\n🔹Net profit: {}\n\n▪7-days:\n🔹Games played: {}\n🔹Net profit: {}\n\n▪30-days:\n🔹Games played: {}\n🔹Net profit: {}\n".format(
+        played_today, profit_today, played_7days,
+        profit_7days, played_30days, profit_30days)
     # return profit
     await message.answer(profit, reply_markup=get_games_keyboard())
 
@@ -117,8 +125,7 @@ async def end_game(message: types.Message):
     logger.info("end_game() called ...")
     set_game_prize(the_game, 0)
     games_kb = get_games_keyboard()
-    await message.answer('Game ends with no prize 🙁\nDone.', reply_markup=games_kb)
-    # win no money
+    await message.answer('We can do better 🙁...\nKeep working 💪 ...', reply_markup=games_kb)
 
 
 @dp.message_handler(regexp='Set Prize 💲')
@@ -136,7 +143,7 @@ async def add_bullet(message: types.Message):
     logger.info("add_bullet() called ...")
     add_game_bullet(the_game)
     games_kb = get_games_keyboard()
-    await message.answer('1 Bullet added, GOOD LUCK ❗ 🤞\nDone.', reply_markup=games_kb)
+    await message.answer('1 Bullet added, GOOD LUCK ❗ 🤞\n🪬🪬🪬\n', reply_markup=games_kb)
 
 
 @dp.message_handler(regexp='Back ↩')
@@ -229,6 +236,8 @@ async def default(message: types.Message):
     if last_function == 'set_prize':
         logger.info("setting prize to close game record")
         set_game_prize(the_game, int(message.text))
+        games_kb = get_games_keyboard()
+        await message.answer('Nice work 🤑\n', reply_markup=games_kb)
         last_function = 'default'
         return
     if last_function == 'add_new_game':

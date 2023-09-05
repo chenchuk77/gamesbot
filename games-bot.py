@@ -78,9 +78,19 @@ async def start(message: types.Message):
     logger.info("start() called ...")
     last_function = 'start'
     games_kb = get_games_keyboard()
-    await message.answer('Im games-bot 🤓\npress the menu button to setup a new game\n or update existing ...',
+    await message.answer('Welcome to games-bot 🤓\nPress the menu button to setup a new game\nor update existing ...',
                          reply_markup=games_kb)
 
+
+@dp.message_handler(commands=['end'])
+async def end(message: types.Message):
+    logger.info("end() called ...")
+    sys.exit(1)
+    # # global the_game
+    # last_function = 'start'
+    # games_kb = get_games_keyboard()
+    # await message.answer('Welcome to games-bot 🤓\nPress the menu button to setup a new game\nor update existing ...',
+    #                      reply_markup=games_kb)
 
 # handles request to update a game record, ie: "Spades:PLO:Warmup:(60+60+12)"
 @dp.message_handler(regexp=r"^.*\:.*\:.*\:.*$")

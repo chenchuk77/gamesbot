@@ -85,7 +85,7 @@ async def start(message: types.Message):
 @dp.message_handler(commands=['end'])
 async def end(message: types.Message):
     logger.info("end() called ...")
-    sys.exit(1)
+    # sys.exit("ending bot")
     # # global the_game
     # last_function = 'start'
     # games_kb = get_games_keyboard()

@@ -47,3 +47,11 @@ mysqldump: [Warning] Using a password on the command line interface can be insec
 bash-4.2# 
 
 
+### Running the application
+1. Start the watchdog :
+    ```bash
+   $ ./start-gamesbot.sh &
+   ```
+2. ddd
+
+

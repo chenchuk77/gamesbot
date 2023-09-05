@@ -3,7 +3,7 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
-ENV GAMESBOT_VERSION=1.0.10
+ENV GAMESBOT_VERSION=1.0.11
 
 #CMD ["/bin/sleep", "100h"]
 CMD ["python3", "games-bot.py"]

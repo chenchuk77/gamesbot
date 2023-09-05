@@ -57,8 +57,8 @@ async def statistics(message: types.Message):
     played_30days = str(get_games_count_last_n_days(30))
     profit_30days = str(get_30days_netprofit())
 
-    profit = "Statistics 📈\n▪Today:\n🔹Games played: {}\n🔹Net profit: {}\n\n▪7-days:\n🔹Games played: {}\n🔹Net profit: {}\n\n▪30-days:\n🔹Games played: {}\n🔹Net profit: {}\n".format(
-        played_today, profit_today, played_7days,
+    profit = "Statistics 📈\nPID: {}\n▪Today:\n🔹Games played: {}\n🔹Net profit: {}\n\n▪7-days:\n🔹Games played: {}\n🔹Net profit: {}\n\n▪30-days:\n🔹Games played: {}\n🔹Net profit: {}\n".format(
+        os.getenv('HOSTNAME'), played_today, profit_today, played_7days,
         profit_7days, played_30days, profit_30days)
     # return profit
     await message.answer(profit, reply_markup=get_games_keyboard())

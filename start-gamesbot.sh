@@ -15,6 +15,9 @@ sleep 2s
 
 while true; do
   # start gamesbot if its not running
+  GAMESBOT_VERSION=$(grep 'GAMESBOT_VERSION' Dockerfile | cut -d "=" -f2)
+  IMAGE=chenchuk/gamesbot:${GAMESBOT_VERSION}
+
   docker ps | grep gamesbot > /dev/null 2>&1 || \
     { docker run -d --rm \
         --name gamesbot \

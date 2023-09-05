@@ -7,11 +7,11 @@ GAMESBOT_VERSION=$(grep 'GAMESBOT_VERSION' Dockerfile | cut -d "=" -f2)
 IMAGE=chenchuk/gamesbot:${GAMESBOT_VERSION}
 
 # stoping and removing old container
-docker stop gamesbot || true > /dev/null 2>&1
-docker rm gamesbot   || true > /dev/null 2>&1
+docker stop gamesbot > /dev/null 2>&1 || true
+docker rm gamesbot   > /dev/null 2>&1 || true
 sleep 2s
 
-docker ps | grep gamesbot
+#docker ps | grep gamesbot
 
 while true; do
   # start gamesbot if its not running

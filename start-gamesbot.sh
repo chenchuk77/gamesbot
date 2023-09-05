@@ -11,10 +11,17 @@ docker stop gamesbot || true > /dev/null 2>&1
 docker rm gamesbot   || true > /dev/null 2>&1
 sleep 2s
 
-#docker run -d --rm \
-docker run -d --restart unless-stopped \
-  --name gamesbot \
-  -e GAMESBOT_VERSION=${GAMESBOT_VERSION} \
-  -v ${PWD}:/app \
-    ${IMAGE} "$@"
+docker ps | grep gamesbot
+
+while true; do
+  # start gamesbot if its not running
+  docker ps | grep gamesbot > /dev/null 2>&1 || \
+    { docker run -d --rm \
+        --name gamesbot \
+        -e GAMESBOT_VERSION=${GAMESBOT_VERSION} \
+        -v ${PWD}:/app \
+          ${IMAGE} "$@"
+      sleep 10s
+    }
+done
 

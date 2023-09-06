@@ -120,9 +120,9 @@ async def update_game(message: types.Message):
     else:
         update_kb.add(end_game_button, set_prize_button, bullet_button)
     update_kb.add('Back ↩')
-    game_description = "🔸Club: {}\n🔸Game type: {}\n🔸Tournament name: {}\n🔸Buyin: {}\n🔹Net profit: {}". \
+    game_description = "🔸Club: {}\n🔸Game type: {}\n🔸Tournament name: {}\n🔸Buyin: {}\n🔸Bullets: {}\n🔸KO's: {}\n🔹Net profit: {}". \
         format(the_game.club, the_game.game_type, the_game.name,
-               the_game.buyin_string, str(the_game.net_profit))
+               the_game.buyin_string, str(the_game.bullets), str(the_game.bounties) ,str(the_game.net_profit))
     await message.answer(game_description, reply_markup=update_kb)
 
 
@@ -168,7 +168,13 @@ async def add_bounty(message: types.Message):
     logger.info("add_bounty() called ...")
     win_bounty(the_game)
     games_kb = get_games_keyboard()
-    await message.answer('Done.', reply_markup=games_kb)
+    game_description = "🔸Club: {}\n🔸Game type: {}\n🔸Tournament name: {}\n🔸Buyin: {}\n🔸Bullets: {}\n🔸KO's: {}\n🔹Net profit: {}". \
+        format(the_game.club, the_game.game_type, the_game.name,
+               the_game.buyin_string, str(the_game.bullets), str(the_game.bounties) ,str(the_game.net_profit))
+    await message.answer(game_description, reply_markup=games_kb)
+
+
+    # await message.answer('Done.', reply_markup=games_kb)
 
 
 @dp.message_handler(regexp='Start a new Game 🎲')

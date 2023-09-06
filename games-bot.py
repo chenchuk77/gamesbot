@@ -64,6 +64,12 @@ async def statistics(message: types.Message):
     await message.answer(profit, reply_markup=get_games_keyboard())
 
 
+@dp.message_handler(commands=['about', 'help'])
+async def about(message: types.Message):
+    about_text = "About ℹ️\n\nℹ️ Hostname: {}\nℹ️ Version: {}\n\n".format(
+        os.getenv('HOSTNAME'), os.getenv('GAMESBOT_VERSION'))
+    await message.answer(about_text, reply_markup=get_games_keyboard())
+
 # # USE FOR DEVELOPING ONLY !!!
 # @dp.message_handler(commands=['db_init'])
 # async def db_init(message: types.Message):

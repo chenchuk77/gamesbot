@@ -5,6 +5,7 @@ def get_running_games():
     session = Session()
     db_games = session.query(Game)
     running_games = [x for x in db_games if x.prize is None]
+    session.close()
     return running_games
 
 
@@ -14,6 +15,7 @@ def set_game_prize(game, prize):
     db_game.prize = prize
     db_game.net_profit += prize
     session.commit()
+    session.close()
 
 
 def add_game_bullet(game):
@@ -23,6 +25,7 @@ def add_game_bullet(game):
     db_game.total_buyin -= db_game.bullet_price
     db_game.net_profit -= db_game.bullet_price
     session.commit()
+    session.close()
 
 
 def win_bounty(game):
@@ -31,11 +34,13 @@ def win_bounty(game):
     db_game.bounties += 1
     db_game.net_profit += get_bounty_value(db_game.buyin_string)
     session.commit()
+    session.close()
 
 
 def is_game_running(game):
     session = Session()
     db_game = session.query(Game).filter(Game.id == game.id).first()
+    session.close()
     return db_game.prize is not None
 
 
@@ -83,12 +88,14 @@ def start_new_game(game_type, name, buyin_string, club_name):
 
     session.add(new_game)
     session.commit()
+    session.close()
 
 
 def list_club_names():
     session = Session()
     all_clubs = session.query(Club)
     club_names = [x.name for x in all_clubs]
+    session.close()
     return sorted(club_names)
 
 
@@ -96,6 +103,7 @@ def list_game_types():
     session = Session()
     all_games = session.query(Game)
     game_types = [x.game_type for x in all_games]
+    session.close()
     return sorted(list(set(game_types)))
 
 
@@ -103,6 +111,7 @@ def list_game_names():
     session = Session()
     all_games = session.query(Game)
     game_names = [x.name for x in all_games]
+    session.close()
     return sorted(list(set(game_names)))
 
 
@@ -111,6 +120,7 @@ def list_buyin_strings():
     all_games = session.query(Game)
     buyin_strings = [x.buyin_string for x in all_games]
     # set to remove dups
+    session.close()
     return sorted(list(set(buyin_strings)))
 
 
@@ -137,6 +147,7 @@ def create_clubs():
         fullhouse = Club(name="PPC", balance=0, owner_phone="000999888")
         session.add(fullhouse)
     session.commit()
+    session.close()
 
 
 def create_games():

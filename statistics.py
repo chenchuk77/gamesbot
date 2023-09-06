@@ -13,6 +13,7 @@ def get_games_last_n_days(n):
     db_games = session.query(Game)
     # find games after the start_point
     games_last_n_days = [x for x in db_games if x.started > start_point]
+    session.close()
     return games_last_n_days
 
 def get_games_count_last_n_days(n):

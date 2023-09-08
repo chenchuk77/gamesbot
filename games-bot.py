@@ -300,4 +300,3 @@ async def default(message: types.Message):
 
 # this is the last line
 executor.start_polling(dp)
-about()

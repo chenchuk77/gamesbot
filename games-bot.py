@@ -86,7 +86,7 @@ async def changelog(message: types.Message):
     with open('./git.log', 'r') as file:
         # Read and print each line one by one
         for line in file:
-            changelog_string += "🔸{}\n".format(line)
+            changelog_string += "🔸{}".format(line)
 
     # global the_game
     logger.info("changelog() called ...")
@@ -300,3 +300,4 @@ async def default(message: types.Message):
 
 # this is the last line
 executor.start_polling(dp)
+about()

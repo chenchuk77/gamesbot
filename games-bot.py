@@ -78,6 +78,23 @@ async def about(message: types.Message):
 #     create_games()
 
 
+@dp.message_handler(commands=['changelog'])
+async def changelog(message: types.Message):
+    global last_function
+    # Open the file in read mode ('r')
+    changelog_string = 'ℹ️ CHANGELOG ℹ️\n\n'
+    with open('./git.log', 'r') as file:
+        # Read and print each line one by one
+        for line in file:
+            changelog_string += "🔸{}\n".format(line)
+
+    # global the_game
+    logger.info("changelog() called ...")
+    last_function = 'changelog'
+    games_kb = get_games_keyboard()
+    await message.answer(changelog_string, reply_markup=games_kb)
+
+
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
     global last_function
@@ -86,7 +103,7 @@ async def start(message: types.Message):
     last_function = 'start'
     games_kb = get_games_keyboard()
     await message.answer('Welcome to games-bot [{}]🤓\nPress the menu button to setup a new game\nor update existing'
-                         .format(os.getenv('HOSTNAME')), reply_markup=games_kb)
+                         .format(os.getenv('GAMESBOT_VERSION')), reply_markup=games_kb)
 
 
 # handles request to update a game record, ie: "Spades:PLO:Warmup:(60+60+12)"

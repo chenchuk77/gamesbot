@@ -5,4 +5,5 @@ GAMESBOT_VERSION=$(docker ps | grep gamesbot | awk '{ print $2}' | cut -d ":" -f
 
 echo "stopping gamesbot v${GAMESBOT_VERSION} ..."
 docker stop gamesbot > /dev/null 2>&1 || true
+docker rm gamesbot   > /dev/null 2>&1 || true
 echo "gamesbot stopped."

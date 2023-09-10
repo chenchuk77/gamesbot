@@ -46,6 +46,20 @@ def get_30days_netprofit():
     return sum(game.net_profit for game in today_games)
 
 
+def get_games_count():
+    session = Session()
+    db_games = session.query(Game)
+    all_games = [x for x in db_games]
+    session.close()
+    return len(all_games)
+
+
+def get_last_game():
+    session = Session()
+    g = session.query(Game).order_by(Game.id.desc()).first()
+    session.close()
+    return "{}:{}:{}:{}".format(g.id, g.club, g.game_type, g.buyin_string)
+
 def get_extended_statistics():
     daily_profits = {}
     total_profits = {}

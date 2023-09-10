@@ -73,8 +73,8 @@ async def statistics(message: types.Message):
 
 @dp.message_handler(commands=['about', 'help'])
 async def about(message: types.Message):
-    about_text = "About ℹ️\n\nℹ️ Hostname: {}\nℹ️ Version: {}\n\n".format(
-        os.getenv('HOSTNAME'), os.getenv('GAMESBOT_VERSION'))
+    about_text = "About ℹ️\n\nℹ️ Hostname: {}\nℹ️ Version: {}\nℹ️Games count: {}\nℹ️Last game: {}\n\n".format(
+        os.getenv('HOSTNAME'), os.getenv('GAMESBOT_VERSION'), str(get_games_count()), get_last_game())
     await message.answer(about_text, reply_markup=get_games_keyboard())
 
 # # USE FOR DEVELOPING ONLY !!!

@@ -61,7 +61,14 @@ async def statistics(message: types.Message):
         os.getenv('HOSTNAME'), played_today, profit_today, played_7days,
         profit_7days, played_30days, profit_30days)
     # return profit
-    await message.answer(profit, reply_markup=get_games_keyboard())
+
+    # extended statistics
+    get_extended_statistics()
+
+    arr = [ './total_profits.png' ]
+    photo=open(random.choice(arr), "rb")
+    await bot.send_photo(message.chat.id, photo)
+    await message.answer(profit, reply_markup=get_games_keyboard(),)
 
 
 @dp.message_handler(commands=['about', 'help'])
@@ -102,8 +109,21 @@ async def start(message: types.Message):
     logger.info("start() called ...")
     last_function = 'start'
     games_kb = get_games_keyboard()
+    arr = [ './games-bot.jpeg' ]
+    photo=open(random.choice(arr), "rb")
+    await bot.send_photo(message.chat.id, photo)
     await message.answer('Welcome to games-bot [{}]🤓\nPress the menu button to setup a new game\nor update existing'
                          .format(os.getenv('GAMESBOT_VERSION')), reply_markup=games_kb)
+
+
+# def update_ctx_game():
+#     # get the game from db into the main context
+#     rg = get_running_games()
+#     the_game = [x for x in rg if x.name == game_name and
+#                 x.club == game_club and
+#                 x.game_type == game_type and
+#                 x.buyin_string == game_buyin_string][0]
+
 
 
 # handles request to update a game record, ie: "Spades:PLO:Warmup:(60+60+12)"
@@ -166,6 +186,8 @@ async def add_bullet(message: types.Message):
     global the_game
     logger.info("add_bullet() called ...")
     add_game_bullet(the_game)
+    # update_game()
+    # await update_game(message)
     games_kb = get_games_keyboard()
     await message.answer('1 Bullet added, GOOD LUCK ❗ 🤞\n🪬🪬🪬\n', reply_markup=games_kb)
 

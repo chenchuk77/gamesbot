@@ -1,6 +1,7 @@
 from models import Game, Club, Session
 from datetime import *
 import datetime
+import matplotlib.pylab as plt
 
 
 def get_games_last_n_days(n):
@@ -44,3 +45,55 @@ def get_30days_netprofit():
     today_games = get_games_last_n_days(30)
     return sum(game.net_profit for game in today_games)
 
+
+def get_extended_statistics():
+    daily_profits = {}
+    total_profits = {}
+    total = 0
+
+    session = Session()
+    db_games = session.query(Game)
+    all_games = [x.__dict__ for x in db_games]
+
+    # count daily profit into a dictionary
+    for game in all_games:
+        date = str(datetime.datetime.date(game['started']))
+        if date in daily_profits:
+            daily_profits[date] += int(game['net_profit'])
+        else:
+            daily_profits[date] = int(game['net_profit'])
+
+    # find first day
+    first_day = str(datetime.date.today()) # will be overriden
+    for date_str in daily_profits.keys():
+        if date_from_str(date_str) < date_from_str(first_day):
+            first_day = date_str
+
+    # create total profit
+    day = first_day
+    while day != today():
+        if day in daily_profits:
+            total = total + daily_profits[day]
+        total_profits[day] = total
+        day = tomorrow(day)
+
+    lists = sorted(total_profits.items())
+    x, y = zip(*lists)
+    plt.plot(x,y)
+    plt.savefig('total_profits.png')
+    session.close()
+
+
+def date_from_str(s):
+    d = datetime.datetime.fromisoformat(s).date()
+    return d
+
+
+def today():
+    return str(datetime.date.today())
+
+
+def tomorrow(s):
+    today=date_from_str(s)
+    tomorrow=today + timedelta(days=1)
+    return str(tomorrow)

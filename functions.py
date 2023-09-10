@@ -28,6 +28,15 @@ def add_game_bullet(game):
     session.close()
 
 
+def refresh_ctx_game(game):
+    session = Session()
+    db_game = session.query(Game).filter(Game.id == game.id).first()
+    db_game.bounties += 1
+    db_game.net_profit += get_bounty_value(db_game.buyin_string)
+    session.commit()
+    session.close()
+
+
 def win_bounty(game):
     session = Session()
     db_game = session.query(Game).filter(Game.id == game.id).first()

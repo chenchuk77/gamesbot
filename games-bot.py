@@ -67,6 +67,7 @@ async def statistics(message: types.Message):
 
     arr = [ './total_profits.png' ]
     photo=open(random.choice(arr), "rb")
+    await bot.send_message(message.chat.id, "🔹Matrix balance: https://mr.reports.club/account\n🔹Spades balance: https://spadesclub.gg\n")
     await bot.send_photo(message.chat.id, photo)
     await message.answer(profit, reply_markup=get_games_keyboard(),)
 

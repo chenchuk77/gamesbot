@@ -104,6 +104,14 @@ def list_club_names():
     session = Session()
     all_clubs = session.query(Club)
     club_names = [x.name for x in all_clubs]
+    # Matrix and Spades should appear first
+    if 'Spades' in club_names:
+        club_names.remove('Spades')
+        club_names.insert(0, 'Spades')
+    if 'Matrix' in club_names:
+        club_names.remove('Matrix')
+        club_names.insert(0, 'Matrix')
+
     session.close()
     return sorted(club_names)
 

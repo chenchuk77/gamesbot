@@ -11,7 +11,9 @@ from statistics import *
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO, stream=sys.stdout)
+                    level=logging.DEBUG, stream=sys.stdout)
+# logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#                     level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
 bot = Bot(token=credentials.token)
 dp = Dispatcher(bot)
@@ -236,23 +238,63 @@ async def add_new_game(message: types.Message):
 
 # setting a gametype
 # @dp.message_handler(regexp=r"^[NL|PLO|PLO5|PLO6")
+# @dp.message_handler(regexp=r"^(?:NL|NL-SAT|PLO|PLO5|PLO6)$")
+# async def set_game_type(message: types.Message):
+#     global the_game
+#     global new_game
+#     global last_function
+#     logger.info("set_game_type() called ...")
+#     new_game['game_type'] = message.text
+#     logger.info("preparing a new game record (buyin_string)")
+#     buyin_strings = list_buyin_strings()
+#     buyin_strings_kb = ReplyKeyboardMarkup(one_time_keyboard=True)
+#     for buyin_string in buyin_strings:
+#         buyin_strings_kb.add(KeyboardButton(buyin_string))
+#     back_button = KeyboardButton('Back ↩')
+#     buyin_strings_kb.add(back_button)
+#     await message.answer(get_new_game_status() + 'Choose buyin structure', reply_markup=buyin_strings_kb)
+#     # new_game['buyin_string'] = message.text
+#     last_function = 'set_buyin'
+
+
+# modified by chatgpt
 @dp.message_handler(regexp=r"^(?:NL|NL-SAT|PLO|PLO5|PLO6)$")
 async def set_game_type(message: types.Message):
     global the_game
     global new_game
     global last_function
-    logger.info("set_game_type() called ...")
+    logger.info("set_game_type() by chatgpt called ...")
     new_game['game_type'] = message.text
     logger.info("preparing a new game record (buyin_string)")
     buyin_strings = list_buyin_strings()
-    buyin_strings_kb = ReplyKeyboardMarkup(one_time_keyboard=True)
-    for buyin_string in buyin_strings:
-        buyin_strings_kb.add(KeyboardButton(buyin_string))
+
+    # Define how many buttons you want per row
+    buttons_per_row = 4
+
+    # Create a reply keyboard markup with one_time_keyboard set to True
+    buyin_strings_kb = ReplyKeyboardMarkup(one_time_keyboard=True, row_width=buttons_per_row)
+
+    # Grouping buttons in rows
+    buttons = [KeyboardButton(buyin_string) for buyin_string in buyin_strings]
+    while buttons:
+        row = buttons[:buttons_per_row]
+        buttons = buttons[buttons_per_row:]
+        buyin_strings_kb.row(*row)
+
+    # Add the back button
     back_button = KeyboardButton('Back ↩')
     buyin_strings_kb.add(back_button)
+
     await message.answer(get_new_game_status() + 'Choose buyin structure', reply_markup=buyin_strings_kb)
-    # new_game['buyin_string'] = message.text
     last_function = 'set_buyin'
+
+
+
+
+
+
+
+
 
 
 # setting a buyin string in the form of "( .* )"

@@ -22,16 +22,16 @@ $ ./build-local-image.sh
 
 ### Running the bot
 1. Start mysql if necessary
-    ```bash
-   $ cd mysql && ./start-mysql.sh
-   ```
+```bash
+$ cd mysql && ./start-mysql.sh
+```
 2. start the container:
-   ```bash
-   $ # start like this:
-   $ ./start-gamesbot.sh
-   $ # or restart like this:
-   $ ./stop-gamesbot.sh && ./start-gamesbot.sh
-   ```
+```bash
+$ # start like this:
+$ ./start-gamesbot.sh
+$ # or restart like this:
+$ ./stop-gamesbot.sh && ./start-gamesbot.sh
+```
 
 ### DB initial setup
 The database is hosted on the same host (in my case) and running with docker-compose, all details in mysql/ folder

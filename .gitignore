@@ -1,3 +1,6 @@
 __pycache__/
 credentials.py
 config.py
+mysql/backups/db_gamesbot-bkp-*
+mysql/backups/db_player_tracker-bkp-*
+mysql/backups/db-bkp-*
